@@ -31,33 +31,5 @@ if [ ! -d "${BINDIR}" ]; then
     exit 1;
 fi
 
-# Create systemd service file
-echo "Creating systemd service file for MySQL..."
-cat > "/etc/systemd/system/mysql.service" <<EOL
-[Unit]
-Description=MySQL Server
-After=network.target
-
-[Service]
-ExecStart=${BINDIR}/mysqld --defaults-file=${MY_CNF} --datadir=${DATADIR}
-ExecStop=${BINDIR}/mysqld --defaults-file=${MY_CNF} shutdown
-PIDFile=${DATADIR}/mysqld.pid
-Restart=on-failure
-
-[Install]
-WantedBy=multi-user.target
-EOL
-
-# Reload systemd and enable the service
-echo "Reloading systemd and enabling MySQL service..."
-systemctl daemon-reload
-systemctl enable mysql.service
-
-# Start the MySQL service
-echo "Starting MySQL service..."
-systemctl start mysql.service
-
-# Check service status
-systemctl status mysql.service --no-pager
-
-echo "MySQL setup and service configuration complete!"
+cd "${BINDIR}";
+./mysqld --defaults-file="${MY_CNF}" --datadir "$DATADIR" --console;
