@@ -153,6 +153,7 @@ if [ ! -d "${CLIENT_BIN_DIR}" ] && [ ! -z "${SHELL_MYSQL_DEST}" ]; then
 fi
 
 if [ -d "${SERVER_BIN_DIR}" ] && [ ! -d "$DATADIR" ]; then
+  sed -i 's/;/;\n/g' "${COPIED_INIT_SCHEMA}"; # ensure that there are new lines, otherwise sql cannot interprete the file 
   mkdir -p "$DATADIR";
   cd "${SERVER_BIN_DIR}";
   ./mysqld --defaults-file="$MYSQL_HOME/my.cnf" --initialize-insecure --datadir "$DATADIR" --user="${MYSQL_USERNAME}" --init-file="${COPIED_INIT_SCHEMA}" --console;
