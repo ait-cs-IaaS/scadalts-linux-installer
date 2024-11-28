@@ -34,6 +34,8 @@ fi
 cd "${BINDIR}";
 #./mysqld --defaults-file="${MY_CNF}" --datadir "$DATADIR" --console;
 
+#kill if there's a running instance
+pgrep -f mysql && kill -15 $(pgrep -f mysql)
 
 # Run mysqld in the background
 ./mysqld --defaults-file="${MY_CNF}" --datadir "$DATADIR" --console >"${MYSQL_HOME}/mysqld.log" 2>&1 &

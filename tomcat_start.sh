@@ -39,5 +39,8 @@ if [ ! -d "${SCADA_LTS_HOME}" ]; then
     "$CATALINA_BASE"/tomcat_config.sh "$CATALINA_HOME" "${TOMCAT_VERSION}" "$JAVA_HOME";
 fi
 
+#kill if there's a running instance
+pgrep -f catalina && kill -15 $(pgrep -f catalina)
+
 #"$CATALINA_HOME"/bin/catalina.sh run;
 "$CATALINA_HOME"/bin/catalina.sh start;
