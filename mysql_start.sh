@@ -32,4 +32,14 @@ if [ ! -d "${BINDIR}" ]; then
 fi
 
 cd "${BINDIR}";
-./mysqld --defaults-file="${MY_CNF}" --datadir "$DATADIR" --console;
+#./mysqld --defaults-file="${MY_CNF}" --datadir "$DATADIR" --console;
+
+
+# Run mysqld in the background
+./mysqld --defaults-file="${MY_CNF}" --datadir "$DATADIR" --console >"${MYSQL_HOME}/mysqld.log" 2>&1 &
+MYSQLD_PID=$! # Save the background process ID
+
+# Save PID to a file for later management
+echo "${MYSQLD_PID}" >"${DATADIR}/mysqld.pid"
+
+echo "MySQL server started with PID ${MYSQLD_PID}";
